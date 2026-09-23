@@ -37,6 +37,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
+    telegram_id = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        verbose_name="Telegram ID",
+        help_text="ID пользователя в Telegram для получения уведомлений"
+    )
 
     objects = UserManager()
 
