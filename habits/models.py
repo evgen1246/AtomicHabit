@@ -73,7 +73,7 @@ class Habit(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"Я буду {self.action} в {self.time} в {self.place}"
+        return f"Я буду {self.action} в {self.date_time} в {self.place}"
 
     def clean(self):
         """Валидация модели"""

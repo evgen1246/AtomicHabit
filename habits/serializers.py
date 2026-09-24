@@ -9,9 +9,9 @@ class HabitSerializer(serializers.ModelSerializer):
         model = Habit
         fields = [
             "id",
-            "user",
+            "habit_creator",
             "place",
-            "time",
+            "date_time",
             "action",
             "is_pleasant",
             "related_habit",
@@ -22,7 +22,7 @@ class HabitSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "user", "created_at", "updated_at"]
+        read_only_fields = ["id", "habit_creator", "created_at", "updated_at"]
 
     def validate(self, attrs):
         """Валидация на уровне сериализатора"""

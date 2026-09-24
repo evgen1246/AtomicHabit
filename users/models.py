@@ -42,7 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         null=True,
         verbose_name="Telegram ID",
-        help_text="ID пользователя в Telegram для получения уведомлений"
+        help_text="ID пользователя в Telegram для получения уведомлений",
     )
 
     objects = UserManager()

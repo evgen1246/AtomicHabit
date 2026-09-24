@@ -10,18 +10,18 @@ from .services import TelegramService
 def send_habit_reminder(habit_id: int):
     """Отправляет напоминание о привычке пользователю в Telegram"""
     try:
-        habit = Habit.objects.select_related("user").get(id=habit_id)
+        habit = Habit.objects.select_related("habit_creator").get(id=habit_id)
     except Habit.DoesNotExist:
         return f"Привычка {habit_id} не найдена"
 
-    user = habit.user
+    user = habit.habit_creator
 
     if not user.telegram_id:
         return f"У пользователя {user.email} нет Telegram ID"
 
     text = (
         f"🔔 <b>Напоминание о привычке</b>\n\n"
-        f"⏰ Время: {habit.time}\n"
+        f"⏰ Время: {habit.date_time}\n"
         f"📍 Место: {habit.place}\n"
         f"🎯 Действие: {habit.action}\n"
     )
@@ -44,18 +44,17 @@ def send_habit_reminder(habit_id: int):
 
 @shared_task
 def send_all_habit_reminders():
-    """Каждый час проверяет привычки, время которых наступило,и отправляет напоминания."""
+    """Каждую минуту проверяет привычки, время которых наступило"""
     now = timezone.now()
-    current_hour = now.hour
-    current_minute = now.minute
+    current_time = now.time()
     habits = Habit.objects.filter(
-        time__hour=current_hour,
-        time__minute=current_minute,
-    ).select_related("user")
+        date_time__hour=current_time.hour,
+        date_time__minute=current_time.minute,
+    ).select_related("habit_creator")
 
     sent_count = 0
     for habit in habits:
-        if habit.user.telegram_id:
+        if habit.habit_creator.telegram_id:
             send_habit_reminder.delay(habit.id)
             sent_count += 1
 

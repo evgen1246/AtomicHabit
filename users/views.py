@@ -3,13 +3,15 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import User
-from .serializers import UserRegistrationSerializer
+from .serializers import UserRegistrationSerializer, CustomTokenObtainPairSerializer
 
 
 class RegisterAPIView(CreateAPIView):
     """Регистрация пользователя"""
+
     queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
     permission_classes = [AllowAny]
@@ -28,8 +30,15 @@ class RegisterAPIView(CreateAPIView):
         )
 
 
+class CustomTokenObtainPairView(TokenObtainPairView):
+    """Вход по email и паролю"""
+
+    serializer_class = CustomTokenObtainPairSerializer
+
+
 class TelegramLinkView(APIView):
     """Привязка Telegram ID к профилю пользователя"""
+
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
