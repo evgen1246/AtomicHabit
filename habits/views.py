@@ -14,7 +14,9 @@ class HabitViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Habit.objects.filter(habit_creator=user) | Habit.objects.filter(is_public=True)
+        return Habit.objects.filter(habit_creator=user) | Habit.objects.filter(
+            is_public=True
+        )
 
     def perform_create(self, serializer):
         serializer.save(habit_creator=self.request.user)

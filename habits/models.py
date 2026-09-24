@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Habit(models.Model):
-    "Модель привычки"
+    """Модель привычки"""
 
     habit_creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,

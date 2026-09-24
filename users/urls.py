@@ -1,15 +1,10 @@
 from django.urls import path
-from rest_framework_simplejwt.views import (
-    TokenRefreshView,
-    TokenVerifyView,
-)
-from .views import (
-    RegisterAPIView,
-    TelegramLinkView,
-    CustomTokenObtainPairView,
-)
+from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 
-app_name = "users"
+from .apps import UsersConfig
+from .views import CustomTokenObtainPairView, RegisterAPIView, TelegramLinkView
+
+app_name = UsersConfig.name
 
 urlpatterns = [
     path("register/", RegisterAPIView.as_view(), name="register"),
